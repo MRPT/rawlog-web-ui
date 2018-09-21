@@ -10,7 +10,7 @@ defaults: &defaults
     - image: circleci/node:8.11.3
 
 jobs:
-  test:
+  build:
     <<: *defaults  
     steps:
       - checkout
