@@ -19,7 +19,7 @@ jobs:
           - v1-dependencies-
       - run: npm install
       - run: npm run build
-      - run: npm install -g surge
+      - run: sudo npm install -g surge
       - run: surge dist rawlog-web-ui.surge.sh
       - save_cache:
           paths:
