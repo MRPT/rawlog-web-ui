@@ -1,4 +1,5 @@
 # Rawlog Web UI
+[![CircleCI](https://circleci.com/gh/MRPT/rawlog-web-ui.svg?style=svg)](https://circleci.com/gh/MRPT/rawlog-web-ui)
 
 The backend of the app is part of [mrpt-web](https://github.com/rachit173/mrpt-web/tree/dev-rpc-pubsub) library.
 
