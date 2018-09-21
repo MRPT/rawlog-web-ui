@@ -7,8 +7,8 @@
 <script>
 export default {
   computed: {
-    text() {
-      return this.$store.state.currentLogText;
+    text () {
+      return this.$store.state.currentLogText
     }
   }
 }

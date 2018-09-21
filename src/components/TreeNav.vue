@@ -6,7 +6,7 @@
 
 <script>
 /* eslint-disable */
-import MRPTLIB from 'mrpt-web-js';
+import MRPTLIB from '@mrpt/mrpt-web';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 
   export default {

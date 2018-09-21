@@ -40,17 +40,18 @@
 </template>
 
 <script>
-import GraphComponentFlex from '@/components/GraphComponentFlex.vue';
-import { mapGetters } from 'vuex';
-import MRPTLIB from 'mrpt-web-js';
+import GraphComponentFlex from '@/components/GraphComponentFlex.vue'
+import { mapGetters } from 'vuex'
+import MRPTLIB from '@mrpt/mrpt-web'
+
 export default {
   props: {
-    text: String,
+    text: String
   },
-  data() {
+  data () {
     return {
       dialogVisible: false,
-      textData: "",
+      textData: '',
       minIdx: 0,
       maxIdx: 0,
       decimation: 1,
@@ -58,48 +59,48 @@ export default {
     }
   },
   methods: {
-    handleClose(done) {
-      this.dialogVisible = false;
+    handleClose (done) {
+      this.dialogVisible = false
     },
-    generateMapFromOdometry() {
+    generateMapFromOdometry () {
       // make changes to mapData
-      let firstEntry = this.minIdx;
-      let lastEntry = this.maxIdx;
-      let decimate = this.decimation;
-      const ws = this.getWS;
-      console.log('connected', ws.isConnected);
+      const firstEntry = this.minIdx
+      const lastEntry = this.maxIdx
+      const decimate = this.decimation
+      const ws = this.getWS
+      console.log('connected', ws.isConnected)
 
       const mapLoadClient = new MRPTLIB.Service({
-        ws: ws,
-        name: "GetMapAndPath"
-      });
+        ws,
+        name: 'GetMapAndPath'
+      })
 
       const request = new MRPTLIB.ServiceRequest({
         firstEntry,
         lastEntry,
         decimate
-      });
+      })
 
-      let _this = this;
+      const _this = this
 
       mapLoadClient.callService(request, (result) => {
         if (result.err) {
-          console.error("error", result.err);
+          console.error('error', result.err)
         }
-        console.log(result);
-        _this.textData = result.textData;
-        let tmp = [];
-        tmp[0] = MRPTLIB.plots.ScatterPlot.processTrace(result.points.xs, result.points.ys, 1);
-        tmp[1] = MRPTLIB.plots.LinePlot.processTrace(result.path.x, result.path.y);
-        _this.mapData = tmp;
-      });
+        console.log(result)
+        _this.textData = result.textData
+        const tmp = []
+        tmp[0] = MRPTLIB.plots.ScatterPlot.processTrace(result.points.xs, result.points.ys, 1)
+        tmp[1] = MRPTLIB.plots.LinePlot.processTrace(result.path.x, result.path.y)
+        _this.mapData = tmp
+      })
     }
   },
   computed: {
-    rawlogSize() {
-      let arr = this.getTree;
-      let size =  ((arr.length - 1) || 0);
-      return size;
+    rawlogSize () {
+      const arr = this.getTree
+      const size = ((arr.length - 1) || 0)
+      return size
     },
     ...mapGetters([
       'getTree',
@@ -107,9 +108,9 @@ export default {
     ])
   },
   watch: {
-    rawlogSize: function(newVal, oldVal) {
-      console.log("Here");
-      this.maxIdx = newVal;
+    rawlogSize (newVal, oldVal) {
+      console.log('Here')
+      this.maxIdx = newVal
     }
   },
   components: {

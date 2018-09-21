@@ -57,18 +57,18 @@
 </template>
 
 <script>
-import OpenRawlog from '@/components/OpenRawlog.vue';
-import AnimateLaserScan from '@/components/AnimateLaserScan.vue';
-import MotionModel from '@/components/MotionModel.vue';
-import MapGeneration from '@/components/MapGeneration.vue';
-import { mapState } from 'vuex';
+import OpenRawlog from '@/components/OpenRawlog.vue'
+import AnimateLaserScan from '@/components/AnimateLaserScan.vue'
+import MotionModel from '@/components/MotionModel.vue'
+import MapGeneration from '@/components/MapGeneration.vue'
+import { mapState } from 'vuex'
 
 export default {
-  data() {
+  data () {
     return {
-      activeIndex: "1",
+      activeIndex: '1',
       dialogVisible: false
-    };
+    }
   },
   components: {
     OpenRawlog,
@@ -77,15 +77,15 @@ export default {
     MapGeneration
   },
   computed: {
-      ...mapState([
-    ]),
+    ...mapState([
+    ])
   },
   methods: {
-    handleSelect(key, keyPath) {
-      console.log(key, keyPath);
+    handleSelect (key, keyPath) {
+      console.log(key, keyPath)
     }
   }
-};
+}
 </script>
 
 <style scoped>

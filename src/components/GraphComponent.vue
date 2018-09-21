@@ -4,46 +4,45 @@
 </template>
 
 <script>
-import MRPTLIB from 'mrpt-web-js';
+import MRPTLIB from '@mrpt/mrpt-web'
 
 export default {
   props: {
     divID: {
       type: String,
-      required: true,
+      required: true
     },
     plotData: {
       // type: Object,
       required: true
     }
   },
-  data() {
+  data () {
     return {
       plot: null
     }
   },
-  mounted() {
-    let xs;
-    let ys;
-    if (!this.data) {
-      xs = [];
-      ys = [];
-    }
-    else {
-      xs = data.xs || [];
-      ys = data.ys || [];
+  mounted () {
+    let xs
+    let ys
+    if (!this.plotData) {
+      xs = []
+      ys = []
+    } else {
+      xs = this.plotData.xs || []
+      ys = this.plotData.ys || []
     }
 
-    this.plot = new MRPTLIB.plots.ScatterPlot(xs, ys, this.divID);
+    this.plot = new MRPTLIB.plots.ScatterPlot(xs, ys, this.divID)
   },
   methods: {
   },
   watch: {
-    plotData: function(newData) {
-      console.log("newData", newData);
-      let xs = newData.xs || [];
-      let ys = newData.ys || [];
-      this.plot.processData(xs, ys);
+    plotData (newData) {
+      console.log('newData', newData)
+      const xs = newData.xs || []
+      const ys = newData.ys || []
+      this.plot.processData(xs, ys)
     }
   }
 }

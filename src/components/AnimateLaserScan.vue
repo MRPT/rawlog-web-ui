@@ -29,14 +29,14 @@
 </template>
 
 <script>
-import MRPTLIB from 'mrpt-web-js';
-import { mapGetters } from 'vuex';
+import MRPTLIB from '@mrpt/mrpt-web'
+import { mapGetters } from 'vuex'
 
 export default {
   props: {
     text: String
   },
-  data() {
+  data () {
     return {
       dialogVisible: false,
       scene: null,
@@ -48,102 +48,101 @@ export default {
     }
   },
   methods: {
-      handlePlay() {
-        console.log("play");
-        const ws = this.getWS;
-        console.log('connected', ws.isConnected);
+    handlePlay () {
+      console.log('play')
+      const ws = this.getWS
+      console.log('connected', ws.isConnected)
 
-        const logLoadClient = new MRPTLIB.Service({
-          ws: ws,
-          name: 'GetRawlogDataFromIndex'
-        });
+      const logLoadClient = new MRPTLIB.Service({
+        ws,
+        name: 'GetRawlogDataFromIndex'
+      })
 
-        const arr = this.getTree;
-        const len = arr.length;
+      const arr = this.getTree
+      const len = arr.length
 
-        this.play(logLoadClient, ws, len);
-      },
-      play: async function(client, ws, len) {
-        function sleep(ms) {
-          return new Promise(resolve => setTimeout(resolve, ms));
-        }
-
-        this.playDisable = true;
-
-        for (let i = 0; i < len; i++) {
-          const request = new MRPTLIB.ServiceRequest({
-            index: i
-          });
-
-          let _this = this;
-
-          client.callService(request, (result) => {
-            if (result.err) {
-              console.error("error", result.err);
-            }
-            if (result && result.laserScan) {
-              _this.laserScan.processMessage(Object.assign(result.laserScan,{enable_surface: false}));
-            }
-          });
-
-          await sleep(this.sleepTime);
-        }
-        this.playDisable = false;
-      },
-      handleClose(done) {
-        this.dialogVisible = false;
-      },
-      initiateScene() {
-        if(!document.getElementById("animation-scene")) {
-          return;
-        }
-        if(this.scene === null) {
-          let parent = document.getElementById("animation-scene");
-          let width = parent.getBoundingClientRect().width - 10;
-          let height = parent.getBoundingClientRect().height - 10;
-          this.scene = new MRPTLIB.Scene({
-            divID: "animation-scene",
-            width: width,
-            height: height,
-            cameraPose :{
-              x : -3,
-              y: -3,
-              z: 5
-            }
-          });
-          this.laserScan = new MRPTLIB.model.CPlanarLaserScan();
-          this.scene.addObject(this.laserScan);
-          this.scene.controls.handleResize();
-        }
+      this.play(logLoadClient, ws, len)
+    },
+    async play (client, ws, len) {
+      function sleep (ms) {
+        return new Promise(resolve => setTimeout(resolve, ms))
       }
+
+      this.playDisable = true
+
+      for (let i = 0; i < len; i++) {
+        const request = new MRPTLIB.ServiceRequest({
+          index: i
+        })
+
+        const _this = this
+
+        client.callService(request, (result) => {
+          if (result.err) {
+            console.error('error', result.err)
+          }
+          if (result && result.laserScan) {
+            _this.laserScan.processMessage(Object.assign(result.laserScan, { enable_surface: false }))
+          }
+        })
+
+        await sleep(this.sleepTime)
+      }
+      this.playDisable = false
+    },
+    handleClose (done) {
+      this.dialogVisible = false
+    },
+    initiateScene () {
+      if (!document.getElementById('animation-scene')) {
+        return
+      }
+      if (this.scene === null) {
+        const parent = document.getElementById('animation-scene')
+        const width = parent.getBoundingClientRect().width - 10
+        const height = parent.getBoundingClientRect().height - 10
+        this.scene = new MRPTLIB.Scene({
+          divID: 'animation-scene',
+          width,
+          height,
+          cameraPose: {
+            x: -3,
+            y: -3,
+            z: 5
+          }
+        })
+        this.laserScan = new MRPTLIB.model.CPlanarLaserScan()
+        this.scene.addObject(this.laserScan)
+        this.scene.controls.handleResize()
+      }
+    }
   },
   watch: {
-    dialogVisible: function(newValue, oldValue) {
-        if( newValue === true) {
-          this.initiateScene();
-        }
-        else{
-          this.scene.controls.handleResize();
-        }
+    dialogVisible (newValue, oldValue) {
+      if (newValue === true) {
+        this.initiateScene()
+      } else {
+        this.scene.controls.handleResize()
+      }
     }
   },
   computed: {
     ...mapGetters([
       'getWS',
-      'getTree',
+      'getTree'
     ])
   },
-  mounted: async function() {
-    function sleep(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms));
+  async mounted () {
+    function sleep (ms) {
+      return new Promise(resolve => setTimeout(resolve, ms))
     }
-    this.dialogVisible = true;
-    await sleep(1);
-    this.dialogVisible = false;
-    await sleep(1);
-    this.dialogVisible = true;
-    await sleep(1);
-    this.dialogVisible = false;
+    this.dialogVisible = true
+    await sleep(1)
+    this.dialogVisible = false
+    await sleep(1)
+    this.dialogVisible = true
+    await sleep(1)
+    this.dialogVisible = false
   }
 }
 </script>

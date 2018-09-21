@@ -15,22 +15,22 @@
               <el-container direction="vertical">
               <el-container>
                 Ratio motion to x/y std. dev (alpha_1)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <el-input-number v-model="edG_A1" size="mini" controls-position="right" :min="-10000000" :max="10000000"></el-input-number>
+                <el-input-number v-model="edGA1" size="mini" controls-position="right" :min="-10000000" :max="10000000"></el-input-number>
                 <span>&nbsp;&nbsp;(meter/meter)</span>
               </el-container>
               <el-container>
                 Ratio rotation to x/y std. dev (alpha_2)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <el-input-number v-model="edG_A2" size="mini" controls-position="right"></el-input-number>
+                <el-input-number v-model="edGA2" size="mini" controls-position="right"></el-input-number>
                 <span>&nbsp;&nbsp;(meter/deg)</span>
               </el-container>
               <el-container>
                 Ratio motion x/y to phi std. dev (alpha_3)&nbsp;&nbsp;
-                <el-input-number v-model="edG_A3" size="mini" controls-position="right"></el-input-number>
+                <el-input-number v-model="edGA3" size="mini" controls-position="right"></el-input-number>
                 <span>&nbsp;&nbsp;(deg/meter)</span>
               </el-container>
               <el-container>
                 Ratio rotation to phi std. dev (alpha_4)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <el-input-number v-model="edG_A4" size="mini" controls-position="right"></el-input-number>
+                <el-input-number v-model="edGA4" size="mini" controls-position="right"></el-input-number>
                 <span>&nbsp;&nbsp;(deg/deg)</span>
               </el-container>
               <el-container>
@@ -133,31 +133,31 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import GraphComponent from '@/components/GraphComponent.vue';
-import MRPTLIB from 'mrpt-web-js';
+import { mapGetters, mapActions } from 'vuex'
+import GraphComponent from '@/components/GraphComponent.vue'
+import MRPTLIB from '@mrpt/mrpt-web'
 
 export default {
   props: {
-    text: String,
+    text: String
   },
-  data() {
+  data () {
     return {
       dialogVisible: false,
       activeName: 'first',
       minIdx: 0,
       maxIdx: 0,
       applyToAll: true,
-      edG_A1: 0,
-      edG_A2: 0,
-      edG_A3: 0,
-      edG_A4: 0,
+      edGA1: 0,
+      edGA2: 0,
+      edGA3: 0,
+      edGA4: 0,
       edMinStdXY: 0.01,
       edMinStdPHI: 0.02,
-      default_edG_A1: 0,
-      default_edG_A2: 0,
-      default_edG_A3: 0,
-      default_edG_A4: 0,
+      default_edGA1: 0,
+      default_edGA2: 0,
+      default_edGA3: 0,
+      default_edGA4: 0,
       default_edMinStdXY: 0.01,
       default_edMinStdPHI: 0.02,
       edA1: 0.05,
@@ -174,95 +174,102 @@ export default {
       default_edNumParts: 300,
       default_edAddXY: 0.001,
       default_edAddPhi: 0.050,
-      data1: { xs: [], ys: []},
-      data2: { xs: [], ys: []},
-      Ax : 0.3,
+      data1: { xs: [], ys: [] },
+      data2: { xs: [], ys: [] },
+      Ax: 0.3,
       Ay: 0.1,
       Aphi: 10
-    };
+    }
   },
   methods: {
-    handleClose(done) {
-      this.dialogVisible = false;
+    handleClose (done) {
+      this.dialogVisible = false
     },
-    resetDefaultValue() {
+    resetDefaultValue () {
       if (this.activeName === 'first') {
-        this.edG_A1 = this.default_edG_A1;
-        this.edG_A2 = this.default_edG_A2;
-        this.edG_A3 = this.default_edG_A3;
-        this.edG_A4 = this.default_edG_A4;
-        this.edMinStdXY = this.default_edMinStdXY;
-        this.edMinStdPHI = this.default_edMinStdPHI;
+        this.edGA1 = this.default_edGA1
+        this.edGA2 = this.default_edGA2
+        this.edGA3 = this.default_edGA3
+        this.edGA4 = this.default_edGA4
+        this.edMinStdXY = this.default_edMinStdXY
+        this.edMinStdPHI = this.default_edMinStdPHI
+      } else {
+        this.edA1 = this.default_edA1
+        this.edA2 = this.default_edA2
+        this.edA3 = this.default_edA3
+        this.edA4 = this.default_edA4
+        this.edNumParts = this.default_edNumParts
+        this.edAddXY = this.default_edAddXY
+        this.edAddPhi = this.default_edAddPhi
       }
-      else {
-      this.edA1 = this.default_edA1;
-      this.edA2 = this.default_edA2;
-      this.edA3 = this.default_edA3;
-      this.edA4 = this.default_edA4;
-      this.edNumParts = this.default_edNumParts;
-      this.edAddXY = this.default_edAddXY;
-      this.edAddPhi = this.default_edAddPhi;
-      }
-      this.apply();
+      this.apply()
     },
-    getSendData() {
-      let sendData;
-      if(this.activeName === 'first') {
-        const edG_A1 = this.edG_A1;
-        const edG_A2 = this.edG_A2;
-        const edG_A3 = this.edG_A3;
-        const edG_A4 = this.edG_A4;
-        const edMinStdXY = this.edMinStdXY;
-        const edMinStdPHI = this.edMinStdPHI;
+    getSendData () {
+      let sendData
+      if (this.activeName === 'first') {
+        const edGA1 = this.edGA1
+        const edGA2 = this.edGA2
+        const edGA3 = this.edGA3
+        const edGA4 = this.edGA4
+        const edMinStdXY = this.edMinStdXY
+        const edMinStdPHI = this.edMinStdPHI
         sendData = {
-          model: "Gaussian",
-          edG_A1, edG_A2, edG_A3, edG_A4,
-          edMinStdXY, edMinStdPHI,
-        };
-      }
-      else {
-        const edA1 = this.edA1;
-        const edA2 = this.edA2;
-        const edA3 = this.edA3;
-        const edA4 = this.edA4;
-        const edNumParts = this.edNumParts;
-        const edAddXY = this.edAddXY;
-        const edAddPhi = this.edAddPhi;
+          model: 'Gaussian',
+          edGA1,
+          edGA2,
+          edGA3,
+          edGA4,
+          edMinStdXY,
+          edMinStdPHI
+        }
+      } else {
+        const edA1 = this.edA1
+        const edA2 = this.edA2
+        const edA3 = this.edA3
+        const edA4 = this.edA4
+        const edNumParts = this.edNumParts
+        const edAddXY = this.edAddXY
+        const edAddPhi = this.edAddPhi
         sendData = {
-          model: "Thrun",
-          edA1,edA2,edA3,edA4,edNumParts,edAddXY,edAddPhi
-        };
+          model: 'Thrun',
+          edA1,
+          edA2,
+          edA3,
+          edA4,
+          edNumParts,
+          edAddXY,
+          edAddPhi
+        }
       }
-      return sendData;
+      return sendData
     },
-    apply() {
-      let sendData = this.getSendData();
-      this.uploadModel(sendData);
+    apply () {
+      const sendData = this.getSendData()
+      this.uploadModel(sendData)
     },
-    drawSamples() {
-      console.log("drawing samples");
-      let sendData = this.getSendData();
-      const ws = this.getWS;
-      console.log('connected', ws.isConnected);
+    drawSamples () {
+      console.log('drawing samples')
+      const sendData = this.getSendData()
+      const ws = this.getWS
+      console.log('connected', ws.isConnected)
 
       const samplesDrawClient = new MRPTLIB.Service({
-        ws: ws,
+        ws,
         name: 'DrawRandomSamples'
-      });
+      })
       const request = new MRPTLIB.ServiceRequest({
         sendData,
         Ax: this.Ax,
         Ay: this.Ay,
         Aphi: this.Aphi
-      });
+      })
       samplesDrawClient.callService(request, (result) => {
-        if (result.err)
-        {
-          console.error(result.err);
+        if (result.err) {
+          console.error(result.err)
         }
-        console.log(result);
-        this.data1 = result.position;
-        this.data2 = result.orientation;
+        console.log(result)
+        this.data1 = result.position
+        this.data2 = result.orientation
       })
     },
     ...mapActions({
@@ -270,10 +277,10 @@ export default {
     })
   },
   computed: {
-    rawlogSize() {
-      let arr = this.getTree;
-      let size =  ((arr.length - 1) || 0);
-      return size;
+    rawlogSize () {
+      const arr = this.getTree
+      const size = ((arr.length - 1) || 0)
+      return size
     },
     ...mapGetters([
       'getTree',
@@ -281,16 +288,16 @@ export default {
     ])
   },
   watch: {
-    rawlogSize: function(newVal, oldVal) {
-      console.log("Here");
-      this.maxIdx = newVal;
+    rawlogSize (newVal, oldVal) {
+      console.log('Here')
+      this.maxIdx = newVal
     }
   },
-  created() {
-    this.maxIdx = (this.getTree.length - 1) || 0;
+  created () {
+    this.maxIdx = (this.getTree.length - 1) || 0
   },
-  mounted() {
-    this.maxIdx = (this.getTree.length - 1) || 0;
+  mounted () {
+    this.maxIdx = (this.getTree.length - 1) || 0
   },
   components: {
     GraphComponent
@@ -301,4 +308,3 @@ export default {
 <style scoped>
 
 </style>
-

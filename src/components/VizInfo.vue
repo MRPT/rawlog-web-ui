@@ -28,10 +28,11 @@
 </template>
 
 <script>
-import GraphComponent from '@/components/GraphComponent.vue';
-import ImageComponent from '@/components/ImageComponent.vue';
+import GraphComponent from '@/components/GraphComponent.vue'
+import ImageComponent from '@/components/ImageComponent.vue'
+
 export default {
-  data() {
+  data () {
     return {
       rawlogData: null,
       action2d: null,
@@ -49,4 +50,3 @@ export default {
 <style scoped>
 
 </style>
-

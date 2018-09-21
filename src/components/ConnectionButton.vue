@@ -6,10 +6,10 @@
 </template>
 
 <script>
-import { mapMutations, mapGetters } from 'vuex';
+import { mapMutations, mapGetters } from 'vuex'
 
 export default {
-  data() {
+  data () {
     return {
     }
   },
@@ -18,12 +18,12 @@ export default {
       wrap: 'WRAP'
     })
   },
-  mounted() {
-    this.wrap(this.$socket);
+  mounted () {
+    this.wrap(this.$socket)
   },
   computed: {
-    connected() {
-    return this.getWS.isConnected;
+    connected () {
+      return this.getWS.isConnected
     },
     ...mapGetters([
       'getWS'
@@ -35,4 +35,3 @@ export default {
 <style scoped>
 
 </style>
-
