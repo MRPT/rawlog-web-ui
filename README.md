@@ -3,6 +3,8 @@
 
 The backend of the app is part of [mrpt-web](https://github.com/rachit173/mrpt-web/tree/dev-rpc-pubsub) library.
 
+[Online demo](https://rawlog-web-ui.surge.sh/)
+
 ### Instructions for running the app:
 1. cd rawlog-web-ui
 2. npm install
@@ -17,6 +19,7 @@ The backend of the app is part of [mrpt-web](https://github.com/rachit173/mrpt-w
 The server should be started before running the web-app.<br>
 A green button, on the app depicts an established connection with the server.<br>
 If the connection is not established, try refreshing the page.<br>
+
 ## Currently implemented features
 1. Load rawlog. (File/Open)
 2. Selecting a log from the navbar. The text details can be viewed.
